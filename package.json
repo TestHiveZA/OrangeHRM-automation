@@ -11,6 +11,6 @@
   },
   "scripts": {
     "wdio": "wdio run ./wdio.conf.js",
-    "test": "run wdio"
+    "test": "npm run wdio"
   }
 }
