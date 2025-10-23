@@ -4,8 +4,8 @@ dotenv.config({ override: true });
 export const Login = async () => {
   await browser.maximizeWindow();
   await browser.url("https://opensource-demo.orangehrmlive.com/");
-  console.log("Using username:", process.env.USERNAME);
-  console.log("Using password:", process.env.PASSWORD);
+  // console.log("Using username:", process.env.USERNAME);
+  // console.log("Using password:", process.env.PASSWORD);
 
   const usernameInput = await $('//input[@name="username"]'); 
   await usernameInput.waitForDisplayed();

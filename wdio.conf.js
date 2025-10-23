@@ -53,7 +53,9 @@ export const config = {
         browserName: 'chrome',
         'goog:chromeOptions': {
             args: [
+                '--headless',
                 '--no-sandbox',
+                '--disable-gpu',
                 '--disable-dev-shm-usage',
                 '--disable-autofill-keyboard-accessory-view',
                 '--disable-save-password-bubble',
