@@ -29,3 +29,6 @@ jobs:
 
       - name: Run WebdriverIO tests
         run: npm test # This will execute the 'test' script defined in your package.json
+        env:
+        ORANGEHRM_USERNAME: ${{ secrets.ORANGEHRM_USERNAME }}
+        ORANGEHRM_PASSWORD: ${{ secrets.ORANGEHRM_PASSWORD }}
