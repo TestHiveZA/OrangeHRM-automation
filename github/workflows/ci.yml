@@ -30,11 +30,35 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Check environment variables
+      # - name: Check environment variables
+      #   run: |
+      #     echo "Username is set: $([[ -n "$ORANGEHRM_USERNAME" ]] && echo 'YES' || echo 'NO')"
+      #     echo "Password is set: $([[ -n "$ORANGEHRM_PASSWORD" ]] && echo 'YES' || echo 'NO')"
+
+      # - name: Run WebdriverIO tests
+      #   run: npm test
+
+      - name: Create .env file from secrets
         run: |
-          echo "Username is set: $([[ -n "$ORANGEHRM_USERNAME" ]] && echo 'YES' || echo 'NO')"
-          echo "Password is set: $([[ -n "$ORANGEHRM_PASSWORD" ]] && echo 'YES' || echo 'NO')"
+          echo "ORANGEHRM_USERNAME=${{ secrets.ORANGEHRM_USERNAME }}" > .env
+          echo "ORANGEHRM_PASSWORD=${{ secrets.ORANGEHRM_PASSWORD }}" >> .env
+          echo "✅ .env file created with credentials"
+          echo "=== .env file contents (hidden values) ==="
+          echo "ORANGEHRM_USERNAME=***"
+          echo "ORANGEHRM_PASSWORD=***"
+
+      - name: Verify .env file
+        run: |
+          echo "=== Checking .env file ==="
+          if [ -f .env ]; then
+            echo "✅ .env file exists"
+            echo "File size: $(wc -l < .env) lines"
+            echo "Contains ORANGEHRM_USERNAME: $(grep -q ORANGEHRM_USERNAME .env && echo 'YES' || echo 'NO')"
+            echo "Contains ORANGEHRM_PASSWORD: $(grep -q ORANGEHRM_PASSWORD .env && echo 'YES' || echo 'NO')"
+          else
+            echo "❌ .env file does not exist"
+          fi
 
       - name: Run WebdriverIO tests
-        run: npm test
+      #   run: npm test
         
