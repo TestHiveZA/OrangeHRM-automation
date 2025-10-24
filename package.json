@@ -10,6 +10,6 @@
     "dotenv": "^17.2.3"
   },
   "scripts": {
-    "test": "wdio run ./wdio.conf.js"
+    "test": "npm run wdio"
   }
 }
