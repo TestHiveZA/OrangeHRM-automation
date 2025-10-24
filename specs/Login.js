@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-dotenv.config({ override: true });
+dotenv.config();
 
 export const Login = async () => {
   const username = String(process.env.ORANGEHRM_USERNAME ?? process.env.USERNAME ?? '');
