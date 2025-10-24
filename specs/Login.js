@@ -11,15 +11,15 @@ export const Login = async () => {
 
   await browser.maximizeWindow();
   await browser.url("https://opensource-demo.orangehrmlive.com/");
-  console.log("Using username:", username);
-  console.log("Using password:", password);
 
   const usernameInput = await $('//input[@name="username"]'); 
   await usernameInput.waitForDisplayed();
+  await usernameInput.clearValue();
   await usernameInput.setValue(username);
 
   const passwordInput = await $('//input[@name="password"]');
   await passwordInput.waitForDisplayed();
+  await passwordInput.clearValue();
   await passwordInput.setValue(password);
 
   const loginBtn = await $('//button[@type="submit"]');
