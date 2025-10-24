@@ -2,18 +2,25 @@ import dotenv from 'dotenv';
 dotenv.config({ override: true });
 
 export const Login = async () => {
+  const username = String(process.env.ORANGEHRM_USERNAME ?? process.env.USERNAME ?? '');
+  const password = String(process.env.ORANGEHRM_PASSWORD ?? process.env.PASSWORD ?? '');
+
+  if (!username || !password) {
+    throw new Error('Missing ORANGEHRM_USERNAME / ORANGEHRM_PASSWORD (or USERNAME / PASSWORD) environment variables');
+  }
+
   await browser.maximizeWindow();
   await browser.url("https://opensource-demo.orangehrmlive.com/");
-  console.log("Using username:", process.env.USERNAME);
-  console.log("Using password:", process.env.PASSWORD);
+  console.log("Using username:", username);
+  console.log("Using password:", password);
 
   const usernameInput = await $('//input[@name="username"]'); 
   await usernameInput.waitForDisplayed();
-  await usernameInput.setValue(process.env.USERNAME);
+  await usernameInput.setValue(username);
 
   const passwordInput = await $('//input[@name="password"]');
   await passwordInput.waitForDisplayed();
-  await passwordInput.setValue(process.env.PASSWORD);
+  await passwordInput.setValue(password);
 
   const loginBtn = await $('//button[@type="submit"]');
   await loginBtn.click();
