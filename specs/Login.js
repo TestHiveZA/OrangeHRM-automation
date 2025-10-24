@@ -2,8 +2,17 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export const Login = async () => {
-  const username = String(process.env.ORANGEHRM_USERNAME ?? process.env.USERNAME ?? '');
-  const password = String(process.env.ORANGEHRM_PASSWORD ?? process.env.PASSWORD ?? '');
+  const username = process.env.ORANGEHRM_USERNAME;
+  const password = process.env.ORANGEHRM_PASSWORD;
+  
+  if (!username || !password) {
+    throw new Error(
+      `Missing credentials!\n` +
+      `Username exists: ${!!username}\n` +
+      `Password exists: ${!!password}\n` +
+      `Available env vars: ${Object.keys(process.env).filter(k => k.includes('ORANGE')).join(', ') || 'none'}`
+    );
+  }
 
   await browser.maximizeWindow();
   await browser.url("https://opensource-demo.orangehrmlive.com/");

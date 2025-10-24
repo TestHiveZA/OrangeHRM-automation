@@ -27,7 +27,10 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run WebdriverIO tests
+      - name: Check environment variables
+        run: |
+          echo "Username is set: $([[ -n "$ORANGEHRM_USERNAME" ]] && echo 'YES' || echo 'NO')"
+          echo "Password is set: $([[ -n "$ORANGEHRM_PASSWORD" ]] && echo 'YES' || echo 'NO')"
         env:
           ORANGEHRM_USERNAME: ${{ secrets.ORANGEHRM_USERNAME }}
           ORANGEHRM_PASSWORD: ${{ secrets.ORANGEHRM_PASSWORD }}
