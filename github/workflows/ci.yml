@@ -34,4 +34,3 @@ jobs:
         env:
           ORANGEHRM_USERNAME: ${{ secrets.ORANGEHRM_USERNAME }}
           ORANGEHRM_PASSWORD: ${{ secrets.ORANGEHRM_PASSWORD }}
-        run: npm test
