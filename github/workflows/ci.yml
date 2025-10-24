@@ -9,7 +9,9 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    environment: ORANGEHRM 
+    env:
+      ORANGEHRM_USERNAME: ${{ secrets.ORANGEHRM_USERNAME }}
+      ORANGEHRM_PASSWORD: ${{ secrets.ORANGEHRM_PASSWORD }}
 
     steps:
       - name: Checkout code
@@ -32,13 +34,7 @@ jobs:
         run: |
           echo "Username is set: $([[ -n "$ORANGEHRM_USERNAME" ]] && echo 'YES' || echo 'NO')"
           echo "Password is set: $([[ -n "$ORANGEHRM_PASSWORD" ]] && echo 'YES' || echo 'NO')"
-        env:
-          ORANGEHRM_USERNAME: ${{ secrets.ORANGEHRM_USERNAME }}
-          ORANGEHRM_PASSWORD: ${{ secrets.ORANGEHRM_PASSWORD }}
 
       - name: Run WebdriverIO tests
         run: npm test
-        env:
-          ORANGEHRM_USERNAME: ${{ secrets.ORANGEHRM_USERNAME }}
-          ORANGEHRM_PASSWORD: ${{ secrets.ORANGEHRM_PASSWORD }}
         
