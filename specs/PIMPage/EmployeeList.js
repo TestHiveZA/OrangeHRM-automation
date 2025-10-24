@@ -1,18 +1,32 @@
-describe('OrangeHRM Employee Search Automation', () => {
-    it('Should search for an existing employee in the list', async () => {
+import { Login } from "../Login.js";
 
-        // Wait for Dashboard to load
-        await browser.pause(2000);
+describe('PIM Employee List Test', () => {
+    beforeEach(async () => {
+        await Login();
+    });
+
+    // it('Should load PIM page', async () => {
+
+    //     // Navigate to PIM → Employee List
+    //     const pimMenu = await $('//span[text()="PIM"]');
+    //     await expect(pimMenu).toBeDisplayed();
+    //     await pimMenu.click();
+
+    //     await browser.pause(1000);
+    // });
+
+    it('Should search for an existing employee in the list', async () => {
 
         // Navigate to PIM → Employee List
         const pimMenu = await $('//span[text()="PIM"]');
+        await expect(pimMenu).toBeDisplayed();
         await pimMenu.click();
 
         await browser.pause(1000);
 
         // Enter employee name to search
         const employeeName = await $('input[placeholder="Type for hints..."]');
-        await employeeName.setValue('John' + ' ' + 'Wick');
+        await employeeName.setValue('John');
         
         // Click Search
         const searchButton = await $('//button[@type="submit"]');
