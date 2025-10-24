@@ -5,10 +5,6 @@ export const Login = async () => {
   const username = String(process.env.ORANGEHRM_USERNAME ?? process.env.USERNAME ?? '');
   const password = String(process.env.ORANGEHRM_PASSWORD ?? process.env.PASSWORD ?? '');
 
-  if (!username || !password) {
-    throw new Error('Missing ORANGEHRM_USERNAME / ORANGEHRM_PASSWORD (or USERNAME / PASSWORD) environment variables');
-  }
-
   await browser.maximizeWindow();
   await browser.url("https://opensource-demo.orangehrmlive.com/");
 
