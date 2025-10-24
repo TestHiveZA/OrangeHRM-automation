@@ -1,4 +1,6 @@
 export const config = {
+    username: process.env.ORANGEHRM_USERNAME,
+    password: process.env.ORANGEHRM_PASSWORD,
     //
     // ====================
     // Runner Configuration
