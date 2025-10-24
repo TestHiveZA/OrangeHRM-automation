@@ -5,16 +5,6 @@ describe('PIM Employee List Test', () => {
         await Login();
     });
 
-    // it('Should load PIM page', async () => {
-
-    //     // Navigate to PIM → Employee List
-    //     const pimMenu = await $('//span[text()="PIM"]');
-    //     await expect(pimMenu).toBeDisplayed();
-    //     await pimMenu.click();
-
-    //     await browser.pause(1000);
-    // });
-
     it('Should search for an existing employee in the list', async () => {
 
         // Navigate to PIM → Employee List
