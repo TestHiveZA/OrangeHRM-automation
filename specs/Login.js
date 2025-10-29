@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-dotenv.config();
+dotenv.config({ debug: false });
 
 export const Login = async () => {
   const username = process.env.ORANGEHRM_USERNAME;
