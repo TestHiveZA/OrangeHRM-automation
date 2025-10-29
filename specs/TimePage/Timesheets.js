@@ -1,4 +1,4 @@
-import { Login } from "../Login.js";
+import { Login } from "../../pageobjects/Login.js";
 
 describe("Timesheets Page Tests", () => {
     beforeEach(async () => {

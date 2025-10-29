@@ -1,6 +1,6 @@
 import { Login } from "../Login.js";
 
-describe('PIM Employee List Tests', () => {
+describe('PIM Employee List Test', () => {
     beforeEach(async () => {
         await Login();
     });

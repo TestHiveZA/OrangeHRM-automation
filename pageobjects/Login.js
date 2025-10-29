@@ -1,19 +1,31 @@
 import dotenv from 'dotenv';
-dotenv.config({ override: true });
+dotenv.config(); // adding { debug: false } did not help disable the logging
 
 export const Login = async () => {
+  const username = process.env.ORANGEHRM_USERNAME;
+  const password = process.env.ORANGEHRM_PASSWORD;
+  
+  if (!username || !password) {
+    throw new Error(
+      `Missing credentials!\n` +
+      `Username exists: ${!!username}\n` +
+      `Password exists: ${!!password}\n` +
+      `Available env vars: ${Object.keys(process.env).filter(k => k.includes('ORANGE')).join(', ') || 'none'}`
+    );
+  }
+
   await browser.maximizeWindow();
   await browser.url("https://opensource-demo.orangehrmlive.com/");
-  // console.log("Using username:", process.env.USERNAME);
-  // console.log("Using password:", process.env.PASSWORD);
 
   const usernameInput = await $('//input[@name="username"]'); 
   await usernameInput.waitForDisplayed();
-  await usernameInput.setValue(process.env.USERNAME);
+  await usernameInput.clearValue();
+  await usernameInput.setValue(username);
 
   const passwordInput = await $('//input[@name="password"]');
   await passwordInput.waitForDisplayed();
-  await passwordInput.setValue(process.env.PASSWORD);
+  await passwordInput.clearValue();
+  await passwordInput.setValue(password);
 
   const loginBtn = await $('//button[@type="submit"]');
   await loginBtn.click();
@@ -25,3 +37,4 @@ export const Login = async () => {
     }
   );
 };
+
