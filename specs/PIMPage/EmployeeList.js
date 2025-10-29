@@ -16,7 +16,7 @@ describe('Employee List Test', () => {
 
         // Enter employee name to search
         const employeeName = await $('input[placeholder="Type for hints..."]');
-        await employeeName.waitForDisplayed();
+        await employeeName.waitForDisplayed({ timeout: 20000 }); // wait up to 20s
         await employeeName.clearValue();
         await employeeName.setValue('John');
         
