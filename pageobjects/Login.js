@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-dotenv.config({ debug: false });
+dotenv.config(); // adding { debug: false } did not help disable the logging
 
 export const Login = async () => {
   const username = process.env.ORANGEHRM_USERNAME;
