@@ -55,7 +55,7 @@ export const config = {
         browserName: 'chrome',
         'goog:chromeOptions': {
             args: [
-                '--headless',
+                '--headless', //Important to run in headless mode in CI/CD environments
                 '--no-sandbox',
                 '--disable-gpu',
                 '--disable-dev-shm-usage',
