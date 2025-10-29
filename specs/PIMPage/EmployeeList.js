@@ -16,6 +16,8 @@ describe('Employee List Test', () => {
 
         // Enter employee name to search
         const employeeName = await $('input[placeholder="Type for hints..."]');
+        await employeeName.waitForDisplayed();
+        await employeeName.clearValue();
         await employeeName.setValue('John');
         
         // Click Search
