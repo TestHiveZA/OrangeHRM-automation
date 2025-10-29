@@ -9,7 +9,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -19,8 +19,24 @@ jobs:
         with:
           node-version: '18' # Or your preferred Node.js version
 
+      - name: Setup Chrome
+        uses: browser-actions/setup-chrome@latest
+        with:
+          chrome-version: stable
+
       - name: Install dependencies
         run: npm install
 
+      - name: Check environment variables
+        run: |
+          echo "Username is set: $([[ -n "$ORANGEHRM_USERNAME" ]] && echo 'YES' || echo 'NO')"
+          echo "Password is set: $([[ -n "$ORANGEHRM_PASSWORD" ]] && echo 'YES' || echo 'NO')"
+        env:
+          ORANGEHRM_USERNAME: ${{secrets.ORANGEHRM_USERNAME}}
+          ORANGEHRM_PASSWORD: ${{secrets.ORANGEHRM_PASSWORD}}
+
       - name: Run WebdriverIO tests
-        run: npm test # This will execute the 'test' script defined in your package.json
+        run: npm test
+        env:
+          ORANGEHRM_USERNAME: ${{secrets.ORANGEHRM_USERNAME}}
+          ORANGEHRM_PASSWORD: ${{secrets.ORANGEHRM_PASSWORD}}
