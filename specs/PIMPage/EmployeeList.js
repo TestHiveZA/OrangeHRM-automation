@@ -15,7 +15,7 @@ describe('Employee List Test', () => {
         await browser.pause(1000);
 
         // Enter employee name to search
-        const employeeName = await $('#app > div.oxd-layout.orangehrm-upgrade-layout > div.oxd-layout-container > div.oxd-layout-context > div > div.oxd-table-filter > div.oxd-table-filter-area > form > div.oxd-form-row > div > div:nth-child(1) > div > div:nth-child(2) > div > div > input');
+        const employeeName = await $('input[placeholder="Type for hints..."]');
         await employeeName.waitForDisplayed({ timeout: 20000 }); // wait up to 20s
         await employeeName.clearValue();
         await employeeName.setValue('John');
