@@ -1,6 +1,6 @@
 import { Login } from "../../pageobjects/Login.js";
 
-describe('Employee List Test', () => {
+describe('Employee List Test', async() => {
     beforeEach(async () => {
         await Login();
     });
@@ -12,20 +12,23 @@ describe('Employee List Test', () => {
         await expect(pimMenu).toBeDisplayed();
         await pimMenu.click();
 
-        await browser.pause(1000);
+        await pimMenu.waitForDisplayed({ timeout: 5000 });
 
         // Enter employee name to search
         const employeeName = await $('input[placeholder="Type for hints..."]');
         await employeeName.waitForDisplayed({ timeout: 20000 }); // wait up to 20s
         await employeeName.clearValue();
-        await employeeName.setValue('John');
+        await employeeName.setValue('Penelope');
         
         // Click Search
         const searchButton = await $('//button[@type="submit"]');
         await searchButton.click();
 
         // Wait for results to load
-        await browser.pause(2000);
+        await browser.waitUntil(async () => {
+            const results = await $$('div.oxd-table-body div.oxd-table-card');
+            return results.length > 0;
+        }, { timeout: 10000, timeoutMsg: 'Expected search results to load within 10s' });
 
         // Verify result contains the name
         const results = await $$('div.oxd-table-body div.oxd-table-card');
@@ -33,7 +36,7 @@ describe('Employee List Test', () => {
 
         console.log('Search Results:\n', firstResultText);
 
-    await expect(firstResultText).toContain('John');
+       await expect(firstResultText).toContain('Penelope');
 
     });
 });
