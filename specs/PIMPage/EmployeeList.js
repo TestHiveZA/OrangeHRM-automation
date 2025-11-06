@@ -1,12 +1,12 @@
 import { Login } from "../../pageobjects/Login.js";
 import { faker } from '@faker-js/faker';
 
-describe('Employee Management Flow', () => {
-
+describe('Employee List Tests', () => {
+    
     let firstName, middleName, lastName;
 
-    it('Should add a new employee and verify they appear in the Employee List', async () => {
-        
+    it('Should add a new employee', async () => {
+
         await Login();
 
         const pimMenu = await $('//span[text()="PIM"]');
@@ -37,35 +37,48 @@ describe('Employee Management Flow', () => {
         await expect(toastText).toMatch(/success/i);
     });
 
-    it('Should search for the newly added employee and verify they appear in the list', async () => {
-        
-        const pimMenu = await $('//span[text()="PIM"]');
-        await pimMenu.waitForClickable({ timeout: 10000 });
-        await pimMenu.click();
+   it('Should search for the newly added employee and verify they appear in the list', async () => {
 
-        const employeeNameField = await $('//label[text()="Employee Name"]/ancestor::div[contains(@class,"oxd-input-group")]/descendant::input');
-        await employeeNameField.waitForDisplayed({ timeout: 15000 });
+    const pimMenu = await $('//span[text()="PIM"]');
+    await pimMenu.waitForClickable({ timeout: 10000 });
+    await pimMenu.click();
 
-        await employeeNameField.clearValue();
-        await employeeNameField.setValue(firstName);
-        await browser.pause(1000);
+    const employeeName = await $('//label[text()="Employee Name"]/ancestor::div[contains(@class,"oxd-input-group")]/descendant::input');
+    await employeeName.waitForDisplayed({ timeout: 10000 });
 
-        const dropdownOption = await $(`//div[@role="listbox"]//span[text()="${firstName} ${lastName}"]`);
-        if (await dropdownOption.isDisplayed()) {
-            await dropdownOption.click();
-        }
+    await employeeName.clearValue();
+    await employeeName.setValue(lastName);
 
-        const searchButton = await $('//button[normalize-space()="Search"]');
-        await searchButton.waitForClickable({ timeout: 10000 });
-        await searchButton.click();
+    await browser.waitUntil(async () => {
+        const suggestions = await $$('//div[@role="listbox"]//span');
+        return suggestions.length > 0;
+    }, { timeout: 5000, timeoutMsg: 'No autocomplete suggestions appeared' });
 
-        const results = await $$('div.oxd-table-body div.oxd-table-card');
-        const firstResultText = await results[0].getText();
+    const suggestion = await $(`//div[@role="listbox"]//span[contains(translate(text(), "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "abcdefghijklmnopqrstuvwxyz"), "${firstName.toLowerCase()}")]`);
+    if (await suggestion.isDisplayed()) {
+        await suggestion.click();
+    }
 
-        console.log('Search Results:\n', firstResultText);
+    const searchButton = await $('//button[normalize-space()="Search"]');
+    await searchButton.waitForClickable({ timeout: 10000 });
+    await searchButton.click();
 
-        await expect(firstResultText).toContain(firstName);
+    await browser.waitUntil(async () => {
+        const rows = await $$('//div[@role="row" and not(contains(@class,"header"))]');
+        return rows.length > 0;
+    }, { timeout: 15000, timeoutMsg: 'No employee search results loaded.' });
 
-        console.log(`Employee "${firstName}" found in search results.`);
-    });
+    const resultNameCell = await $(`//div[@role="cell"]//div[contains(., "${firstName}")]`);
+    await resultNameCell.waitForDisplayed({ timeout: 15000 });
+
+    const textValue = await resultNameCell.getText();
+    console.log('Found name cell text:', textValue);
+
+    expect(textValue).toContain(firstName);
+    if (middleName) {
+        expect(textValue).toContain(middleName);
+    }
+
+    console.log(` Employee "${firstName} ${middleName}" found successfully in search results.`);
+});
 });
