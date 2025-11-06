@@ -5,7 +5,7 @@ describe("Timesheets Page Tests", () => {
         await Login();
     });
 
-    it("should navigate to Timesheets page - FUNCTIONALITY", async () => {
+    it("Verify user can navigate to Timesheet Page - FUNCTIONALITY", async () => {
         const timeButton = await $('span=Time');
         await expect(timeButton).toBeDisplayed();
         await timeButton.click();
@@ -34,14 +34,47 @@ describe("Timesheets Page Tests", () => {
         await expect(errorMessage).toBeDisplayed();
     });
 
+    it("Verify Timesheets Pending Action list loads, and the view button is visible and functional - FUNCTIONALITY", async () => {
+        const timesheetsPendingLabel = await $('h6=Timesheets Pending Action');
+        await expect(timesheetsPendingLabel).toBeDisplayed();
+
+        const tableRecords = await $('span=(3) Records Found');
+        await expect(tableRecords).toBeDisplayed();
+
+        const viewButtons = await $('.oxd-button.oxd-button--medium.oxd-button--text.oxd-table-cell-action-space');
+        await expect(viewButtons).toBeDisplayed();
+
+        await viewButtons.click();
+
+        await browser.waitUntil(
+            async () => (await browser.getUrl()).includes('time/viewTimesheet/employeeId'),
+            {
+                timeout: 5000,
+                timeoutMsg: "Expected to be on the selected Employee Timesheet page after clicking View button",
+            }
+        );
+
+        const timeButton = await $('span=Time');
+        await expect(timeButton).toBeDisplayed();
+        await timeButton.click();
+
+        await browser.waitUntil(
+            async () => (await browser.getUrl()).includes('time/viewEmployeeTimesheet'),
+            {
+                timeout: 5000,
+                timeoutMsg: "Expected to be on the Timesheets page after clicking Time button",
+            }
+        );
+    });
+
+
     it("Verify user can view Timesheet for a specific employee - FUNCTIONALITY", async () => { 
         const searchInput = await $('input[placeholder="Type for hints..."]');
         await searchInput.setValue('Jo');
-
-        //select first option from the dropdown
+        
         const optionsListSelector = '.oxd-autocomplete-option';
 
-        //wait until the first span element within the options list is displayed+        await browser.waitUntil(async () => {
+        //wait until the first span element within the options list is displayed
         await browser.waitUntil(async () => {
             const firstOptionSpan = await $(`${optionsListSelector} span`);
             return firstOptionSpan.isExisting() && await firstOptionSpan.isDisplayed();
